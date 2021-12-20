@@ -9,31 +9,33 @@ import { HttpService } from '../http.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  allUsers : any;
-  currentUser : any;
-  contactUser : any;
-  
+  allUsers: any;
+  currentUser: any;
+  contactUser: any;
+
   constructor(private _HttpService: HttpService,
-              private _router: Router,
-              private _route: ActivatedRoute) { }
+    private _router: Router,
+    private _route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.contactUser = null;
     let observable = this._HttpService.validateUser();
-    observable.subscribe((data:any) => {
+    observable.subscribe((data: any) => {
       console.log(data);
       this.currentUser = data;
       this.getAllUsers()
-    },
-    (error:any) => {
-      this._router.navigate(['/login']);
     })
-    
-    
+    // },
+    //   (error: any) => {
+    //     console.log(error)
+    //     this._router.navigate(['/login']);
+    //   })
+
+
   }
 
   getAllUsers(): void {
-    console.log( "Getting al bikes and users" );
+    console.log("Getting al bikes and users");
     let observable = this._HttpService.getAll();;
     observable.subscribe((data: any) => {
       console.log(data);
@@ -42,18 +44,18 @@ export class HomeComponent implements OnInit {
     console.log("i got here")
 
   }
-  contactInfo(userEmail: string) : void {
+  contactInfo(userEmail: string): void {
     console.log(userEmail);
     let observable = this._HttpService.getOneByEmail(userEmail)
-    observable.subscribe((data:any) => {
+    observable.subscribe((data: any) => {
       console.log(data);
       this.contactUser = data;
     })
-    
+
   }
-  deleteBike(bikeId: string) : void {
+  deleteBike(bikeId: string): void {
     let observable = this._HttpService.DeleteBike(bikeId, this.currentUser.email)
-    observable.subscribe((data:any) => {
+    observable.subscribe((data: any) => {
       console.log(data, "bike has been erased");
       this.getAllUsers();
     })
@@ -61,8 +63,8 @@ export class HomeComponent implements OnInit {
 
   logout(): void {
     let observable = this._HttpService.logoutUser()
-    observable.subscribe((data:any) => {
-      console.log(data);
+    observable.subscribe((data: any) => {
+      console.log(data, "I've logged out");
       this._router.navigate(['/login'])
     })
   }

@@ -12,30 +12,31 @@ export class LoginComponent implements OnInit {
   loginEmail: string = "";
   errorMessage: string = "";
 
-  constructor( private _HttpService : HttpService,
-                private _router: Router,
-                private _route: ActivatedRoute
-                ) { }
+  constructor(private _HttpService: HttpService,
+    private _router: Router,
+    private _route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
   }
 
-  loginHandler( event: any ): void{
+  loginHandler(event: any): void {
     event.preventDefault();
     console.log("Im getting here");
 
     let currentUser = {
-      loginPassword : this.loginPassword,
-      loginEmail : this.loginEmail
+      loginPassword: this.loginPassword,
+      loginEmail: this.loginEmail
     }
-    let observable = this._HttpService.loginUser( currentUser );
-    observable.subscribe( (data: any ) => {
-      this._router.navigate( ['/home'] );
+    let observable = this._HttpService.loginUser(currentUser);
+    observable.subscribe(data => {
+      console.log(data);
+      this._router.navigate(['/home']);
     },
-    ( error: any ) => {
-      console.log( error );
-      this.errorMessage = error.statusText;
-    });
+      (error: any) => {
+        console.log(error);
+        this.errorMessage = error.statusText;
+      });
   }
 
 }

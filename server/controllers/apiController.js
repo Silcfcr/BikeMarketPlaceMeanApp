@@ -112,9 +112,9 @@ const APIController = {
     deleteBicycle: function (request, response) {
         const id = request.params.id;
         const userEmail = request.body.userEmail;
-        
+
         UserModel.getOneByEmail(userEmail).then((user) => {
-            const bike = new Bicycle({id})
+            const bike = new Bicycle({ id })
             const removeBicycle = user.bicycles.filter(bike => bike._id !== bike._id);
             user.bicycles = removeBicycle;
 
@@ -213,10 +213,9 @@ const APIController = {
             });
     },
     validateUser: function (request, response) {
-        if (request.session.id &&
-            request.session.email &&
+        if (request.session.email &&
             request.session.firstName &&
-            request.session.lastName && request.session.bicycles) {
+            request.session.lastName) {
             let currentUser = {
                 id: request.session.id,
                 email: request.session.email,
@@ -227,7 +226,7 @@ const APIController = {
             response.status(200).json(currentUser);
         }
         else {
-            response.statusMessage = "You need to login to be here!";
+            response.statusMessage = "User not validated!";
             response.status(401).end();
         }
     },
